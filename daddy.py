@@ -12,11 +12,13 @@ headers = { 'Accept-Language':'en-US,en;q=0.5',
 }
 
 f = open("/Users/Bing/Desktop/wiki.txt", "r")
+fp = open("/Users/Bing/Desktop/table.txt", "w")
+
 
 for line in f:
     line=line.strip('\n')
     url = "https://www.godaddy.com/tlds/" + line[1:] + "-domain"
-    print url
+    alink = "<a href=\"" +str(url)+"\"" +"target=_blank >" + "Registe a" +line +"domain</a>"
 
     try:
     	req = urllib2.Request(url,None, headers)
@@ -31,9 +33,13 @@ for line in f:
         	promo_price = soup.strike.string
         else:
         	promo_price = current_price
-        
-        print current_price, promo_price
+
+        if promo_price is not None:
+            fp.write("<tr><td>"+str(line)+"</td>"+"<td>"+promo_price.encode('utf-8')+"</td><td>"+current_price.encode('utf-8')+"</td><td>"+alink+"</td></tr>\n")
+
+
 
     except urllib2.URLError,e:
         pass
 f.close()
+fp.close()
